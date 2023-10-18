@@ -1,12 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import TaskForm from './components/tasks/TaskForm';
+import TaskList from './components/tasks/TaskList';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Router>
+      <NavBar />
+      <div className="container mx-auto mt-10">
+        <Routes>
+          <Route path="/create" element={<TaskForm />} />
+          <Route path="/" element={<TaskList />} />            
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
