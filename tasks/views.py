@@ -9,7 +9,9 @@ from .error_util import format_errors
 
 class TaskListView(APIView):
     def get(self, request):
-        tasks = TaskService.get_all_tasks()
+        status = request.GET.get("status", None)
+        tasks = TaskService.get_filtered_tasks(status)
+
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 

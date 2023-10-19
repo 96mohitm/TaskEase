@@ -8,6 +8,15 @@ class TaskService:
     return Task.objects.all()
 
   @staticmethod
+  def get_filtered_tasks(status=None):
+    tasks = Task.objects.all()
+
+    if status:
+      tasks = tasks.filter(status=status)
+
+    return tasks
+
+  @staticmethod
   def get_task(task_id):
       try:
           return Task.objects.get(id=task_id)
