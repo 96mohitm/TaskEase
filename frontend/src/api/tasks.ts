@@ -1,8 +1,8 @@
 import axiosInstance from './axiosInstance';
 
-export const fetchTasks = async () => {
+export const fetchTasks = async (query = '') => {
     try {
-        const response = await axiosInstance.get('tasks/');
+        const response = await axiosInstance.get(`tasks/${query}`);
         return response.data;
     } catch (error) {
         throw error;

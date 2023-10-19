@@ -11,14 +11,12 @@ type Task = {
 };
 
 const TaskList: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await fetchTasks();
-        setTasks(data);
         setFilteredTasks(data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -30,8 +28,7 @@ const TaskList: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await deleteTask(id);
-      const updatedTasks = tasks.filter(task => task.id !== id);
-      setTasks(updatedTasks);
+      const updatedTasks = await fetchTasks();
       setFilteredTasks(updatedTasks);  // Ensure filtered tasks are also updated
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -40,15 +37,24 @@ const TaskList: React.FC = () => {
   const handleUpdate = async () => {
     try {
       const updatedTasks = await fetchTasks();
-      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating tasks list:", error);
     }
   };
 
+  const handleFilterChange = async (status: string) => {
+    try {
+        const data = status ? await fetchTasks(`?status=${status}`) : await fetchTasks();
+        setFilteredTasks(data);
+    } catch (error) {
+        console.error("Error fetching filtered tasks:", error);
+    }
+};
+
   return (
     <div className="space-y-4">
-      <TaskFilter tasks={tasks} onFilter={setFilteredTasks} />
+      <TaskFilter onFilterChange={handleFilterChange} />
       {filteredTasks.map(task => (
         <TaskItem
           key={task.id}
