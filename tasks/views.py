@@ -5,9 +5,11 @@ from .models import Task
 from .serializers import TaskSerializer
 from .services import TaskService
 from .error_util import format_errors
-
+from rest_framework.permissions import IsAuthenticated
 
 class TaskListView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         status = request.GET.get("status", None)
         tasks = TaskService.get_filtered_tasks(status)
@@ -29,6 +31,8 @@ class TaskListView(APIView):
 
 
 class TaskDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, task_id):
         task = TaskService.get_task(task_id)
         if task:
