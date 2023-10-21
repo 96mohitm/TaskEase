@@ -11,7 +11,8 @@ Instructions on how to setup the project.
 Assumptions:
 1. We will have user login/register
 2. User will be able to see only the task which they have created.
-3. 
+3. The User avatars were stored in the server itself, 
+   but in production it should be stored in blob storage service like S3.
 
 Task:
 1. title
@@ -46,7 +47,7 @@ Other imp features on Frontend:
 #### Implement basic security measures to protect the application from common vulnerabilities.
 1. Rate limit for backend
 2. some security related stuff on the frontend.
-   1. 
+   1. auth token are saved on header (http-only) not on localstorage.
 3. 
 
 Bonus:

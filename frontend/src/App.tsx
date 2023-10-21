@@ -8,6 +8,8 @@ import {
 import TaskForm from './components/tasks/TaskForm';
 import TaskList from './components/tasks/TaskList';
 import NavBar from './components/NavBar';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <div className="container mx-auto mt-10">
         <Routes>
           <Route path="/create" element={<TaskForm />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<TaskList />} />            
         </Routes>
       </div>
