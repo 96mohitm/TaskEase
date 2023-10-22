@@ -11,6 +11,7 @@ type TaskFormData = {
   title: string;
   description?: string;
   due_date?: string;
+  status?: string;
 };
 
 interface Props {
@@ -21,7 +22,8 @@ interface Props {
 }
 
 const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) => {
-  const [formData, setFormData] = useState<TaskFormData>(task || { title: '', description: '' });
+  const defaultState = task || { title: '', description: '', status: 'TO_DO' };
+  const [formData, setFormData] = useState<TaskFormData>(defaultState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isUpdateMode = Boolean(task);
@@ -99,6 +101,20 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) 
                 onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
                 className="mt-1 p-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               />
+            </div>
+            <div>
+              <label htmlFor="taskStatus" className="block text-sm font-medium text-gray-700">Status</label>
+              <select
+                id="taskStatus"
+                value={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                className="mt-1 p-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="TO_DO">To Do</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="IN_REVIEW">In Review</option>
+                <option value="DONE">Done</option>
+              </select>
             </div>
 
             <div className="flex justify-end">
