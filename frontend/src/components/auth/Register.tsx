@@ -7,6 +7,7 @@ const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState<File | null>(null);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -17,10 +18,24 @@ const Register: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    if (avatar) {
+      formData.append('avatar', avatar);
+    }
+
     try {
-      const response = await registerUser({ username, email, password });
+      const response = await registerUser({
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar
+      });
+      
       if (response.status === 201) {
         window.location.href = '/login';
       }
@@ -63,6 +78,20 @@ const Register: React.FC = () => {
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
+            className="mt-1 p-2 w-full border rounded-md"
+          />
+        </div>
+        <div>
+          <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">Profile Image</label>
+          <input
+            type="file"
+            id="avatar"
+            accept="image/*"
+            onChange={e => {
+              if (e.target.files && e.target.files.length > 0) {
+                setAvatar(e.target.files[0]);
+              }
+            }}
             className="mt-1 p-2 w-full border rounded-md"
           />
         </div>

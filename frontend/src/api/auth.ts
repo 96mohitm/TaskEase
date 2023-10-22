@@ -1,8 +1,28 @@
 import axiosInstance from './axiosInstance';
 import { AxiosError } from 'axios';
 
-export const registerUser = async (userData: { username: string; email: string; password: string }) => {
-    return axiosInstance.post('users/register/', userData);
+export const registerUser = async (userData: { 
+  username: string; 
+  email: string; 
+  password: string; 
+  avatar?: File | null 
+}) => {
+  const formData = new FormData();
+  formData.append('username', userData.username);
+  formData.append('email', userData.email);
+  formData.append('password', userData.password);
+  
+  if (userData.avatar) {
+      formData.append('avatar', userData.avatar);
+  }
+
+  const config = {
+      headers: {
+          'Content-Type': 'multipart/form-data'
+      }
+  };
+
+  return axiosInstance.post('users/register/', formData, config);
 };
 
 export const loginUser = async (credentials: { username: string; password: string }) => {
@@ -26,3 +46,8 @@ export const logoutAPI = async () => {
     }
   }
 }
+
+export const fetchUserProfile = async () => {
+  const response = await axiosInstance.get('/users/profile/');
+  return response.data;
+};

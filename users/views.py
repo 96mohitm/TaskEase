@@ -1,19 +1,23 @@
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
+
+from taskease_api import settings
 from .models import UserProfile
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 @csrf_exempt
 @permission_classes((AllowAny, ))
 @api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
 def register(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
@@ -57,3 +61,19 @@ def logout_view(request):
 @permission_classes([IsAuthenticated])
 def is_user_authenticated(self):
   return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    user = request.user
+    profile = user.userprofile
+    avatar_url = profile.avatar.url if profile.avatar else None
+    if avatar_url and not avatar_url.startswith('http'):
+        # prepend the server's domain:
+        avatar_url = settings.BASE_URL + avatar_url
+    data = {
+        "username": user.username,
+        "email": user.email,
+        "avatar": avatar_url
+    }
+    return Response(data)

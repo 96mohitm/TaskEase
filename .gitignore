@@ -111,3 +111,4 @@ backend_env/
 # Node (if using with frontend frameworks/tools)
 frontend/node_modules/
 frontend/package-lock.json
+avatars/
