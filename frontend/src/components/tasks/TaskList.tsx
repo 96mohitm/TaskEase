@@ -4,6 +4,7 @@ import TaskFilter from './TaskFilter';
 import { fetchTasks, deleteTask } from '../../api/tasks';
 import { useAuth } from '../../Auth';
 import { useNavigate } from 'react-router-dom';
+import TaskModal from './TaskModal';
 
 type Task = {
   id: number;
@@ -14,6 +15,7 @@ type Task = {
 
 const TaskList: React.FC = () => {
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [isModalOpen, setModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -40,6 +42,12 @@ const TaskList: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleTaskCreated = async () => {
+    // Refresh the tasks after a new one has been created
+    const updatedTasks = await fetchTasks();
+    setFilteredTasks(updatedTasks);
+  };
+
   const handleDelete = async (id: number) => {
     try {
       await deleteTask(id);
@@ -65,11 +73,20 @@ const TaskList: React.FC = () => {
     } catch (error) {
         console.error("Error fetching filtered tasks:", error);
     }
-};
+  };
 
   return (
     <div className="space-y-4">
-      <TaskFilter onFilterChange={handleFilterChange} />
+      <div className="flex justify-between items-center">
+        <TaskFilter onFilterChange={handleFilterChange} />
+        <button 
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => setModalOpen(true)}
+        >
+          Create Task
+        </button>
+      </div>
+      
       {filteredTasks.map(task => (
         <TaskItem
           key={task.id}
@@ -78,6 +95,11 @@ const TaskList: React.FC = () => {
           onUpdate={handleUpdate}
         />
       ))}
+      <TaskModal 
+        isOpen={isModalOpen} 
+        onClose={() => setModalOpen(false)} 
+        onTaskCreated={handleTaskCreated}
+      />
     </div>
   );
 };
