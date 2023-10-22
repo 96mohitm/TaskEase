@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaCalendar } from 'react-icons/fa';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import TaskModal from './TaskModal';
+import { getStatusLabel } from './task_utils';
 
 type TaskItemProps = {
   task: {
@@ -53,10 +54,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onUpdate }) => {
           </button>
         </div>
       </div>
-      <p className="text-gray-700">{task.description}</p>
+      <div className="text-gray-700 h-20 overflow-y-auto">
+        <p>{task.description}</p>
+      </div>
       <div className="flex justify-between items-center">
         <span className="inline-flex items-center bg-blue-200 text-blue-900 py-1 px-2 rounded-full">
-          {task.status}
+          {getStatusLabel(task.status)}
         </span>
         {task.due_date && (
           <div className="text-sm flex items-center text-gray-800">

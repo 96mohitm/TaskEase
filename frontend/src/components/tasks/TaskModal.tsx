@@ -82,7 +82,7 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) 
             </div>
 
             <div>
-              <label htmlFor="taskDescription" className="block text-sm font-medium text-gray-700">Description</label>
+              <label htmlFor="taskDescription" className="block text-sm font-medium text-gray-700">Description (Optional)</label>
               <textarea
                 id="taskDescription"
                 placeholder="Enter task description"
