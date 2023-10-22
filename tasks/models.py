@@ -12,6 +12,7 @@ class Task(models.Model):
   title = models.CharField(max_length=200, blank=False)
   description = models.TextField(blank=True, null=True)
   status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='TO_DO')
+  due_date = models.DateField(null=True, blank=True)
   # Timestamps for record-keeping
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)

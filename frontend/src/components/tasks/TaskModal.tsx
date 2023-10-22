@@ -10,6 +10,7 @@ type TaskFormData = {
   id?: number;
   title: string;
   description?: string;
+  due_date?: string;
 };
 
 interface Props {
@@ -65,7 +66,7 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) 
           
           {error && <div className="text-red-600 border-l-4 border-red-600 p-4 bg-red-100 rounded"> {error} </div>}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="taskTitle" className="block text-sm font-medium text-gray-700">Task Title</label>
               <input
@@ -87,6 +88,16 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) 
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="mt-1 p-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                 rows={3}
+              />
+            </div>
+            <div>
+              <label htmlFor="taskDueDate" className="block text-sm font-medium text-gray-700">Due Date</label>
+              <input
+                id="taskDueDate"
+                type="date"
+                value={formData.due_date || ''}
+                onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                className="mt-1 p-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
