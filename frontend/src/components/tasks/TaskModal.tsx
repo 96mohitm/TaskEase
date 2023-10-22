@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createTask } from '../../api/tasks';
+import React, { useState, useEffect } from 'react';
+import { createTask, updateTask } from '../../api/tasks';
 import { AxiosError } from 'axios';
 
 interface APIErrorResponse {
@@ -7,6 +7,7 @@ interface APIErrorResponse {
 }
 
 type TaskFormData = {
+  id?: number;
   title: string;
   description?: string;
 };
@@ -14,13 +15,21 @@ type TaskFormData = {
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onTaskCreated: () => void;
+  onTaskCompleted: () => void;
+  task?: TaskFormData;
 }
 
-const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCreated }) => {
-  const [formData, setFormData] = useState<TaskFormData>({ title: '', description: '' });
+const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCompleted, task }) => {
+  const [formData, setFormData] = useState<TaskFormData>(task || { title: '', description: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isUpdateMode = Boolean(task);
+
+  useEffect(() => {
+    if (task) {
+      setFormData(task);
+    }
+  }, [task]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,17 +37,18 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCreated }) => {
     setError(null);
 
     try {
-      const newTask = await createTask(formData);
-      if (newTask) {
-        setFormData({ title: '' });
-        onTaskCreated();
-        onClose();
+      if (isUpdateMode && task) { // Checking if task is defined here
+        await updateTask(task.id!, formData);
       } else {
-        setError("Unexpected error. Please try again.");
+        await createTask(formData);
       }
+  
+      setFormData({ title: '' });
+      onTaskCompleted();
+      onClose();
     } catch (error) {
       const axiosError = error as AxiosError<APIErrorResponse>;
-      setError(axiosError?.response?.data?.error || "Error creating task.");
+      setError(axiosError?.response?.data?.error || "Error processing task.");
     } finally {
       setIsSubmitting(false);
     }
@@ -47,11 +57,11 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCreated }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-10 inset-0 overflow-y-auto bg-opacity-50 bg-gray-700 mt-0">
+    <div className="fixed top-0 left-0 w-full h-full z-10 inset-0 overflow-y-auto bg-opacity-50 bg-gray-700 mt-0" style={{ 'marginTop': '0' }}>
       {/* <div className="bg-black opacity-60 fixed inset-0 z-10"></div> */}
       <div className="flex items-center justify-center min-h-screen z-50"> {/* Modal content container with z-50 */}
         <div className="bg-white p-6 rounded-md shadow-md w-full max-w-lg space-y-4">
-          <h2 className="text-xl font-bold">Create Task</h2>
+        <h2 className="text-xl font-bold">{isUpdateMode ? "Update Task" : "Create Task"}</h2>
           
           {error && <div className="text-red-600 border-l-4 border-red-600 p-4 bg-red-100 rounded"> {error} </div>}
 
@@ -81,14 +91,15 @@ const TaskModal: React.FC<Props> = ({ isOpen, onClose, onTaskCreated }) => {
             </div>
 
             <div className="flex justify-end">
-              <button 
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2"
+              <button
+                className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2 ${isSubmitting ? "opacity-50" : ""}`}
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Creating..." : "Add Task"}
+                {isSubmitting ? (isUpdateMode ? "Updating..." : "Creating...") : (isUpdateMode ? "Update Task" : "Add Task")}
               </button>
-              <button 
+
+              <button
                 className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
                 type="button"
                 onClick={onClose}

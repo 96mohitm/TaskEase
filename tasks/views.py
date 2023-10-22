@@ -12,13 +12,13 @@ class TaskListView(APIView):
 
     def get(self, request):
         status = request.GET.get("status", None)
-        tasks = TaskService.get_filtered_tasks(status)
+        tasks = TaskService.get_filtered_tasks(request.user, status)
 
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = TaskSerializer(data=request.data)
+        serializer = TaskSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             serializer.save()
@@ -26,9 +26,7 @@ class TaskListView(APIView):
 
         # Transform the errors
         error_message = format_errors(serializer.errors)
-
         return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-
 
 class TaskDetailView(APIView):
     permission_classes = [IsAuthenticated]
@@ -46,7 +44,7 @@ class TaskDetailView(APIView):
                 {"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        updated_task, errors = TaskService.update_task(task, request.data)
+        updated_task, errors = TaskService.update_task(task, request.data, request.user)
         if updated_task:
             return Response(TaskSerializer(updated_task).data)
 

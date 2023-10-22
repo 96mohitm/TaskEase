@@ -98,7 +98,7 @@ const TaskList: React.FC = () => {
       <TaskModal 
         isOpen={isModalOpen} 
         onClose={() => setModalOpen(false)} 
-        onTaskCreated={handleTaskCreated}
+        onTaskCompleted={handleTaskCreated}
       />
     </div>
   );

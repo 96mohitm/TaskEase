@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
+import axiosInstance from './api/axiosInstance';
 
 
 interface AuthContextType {
@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // On initial load, check if the user is authenticated
-    axios.get('/users/isAuthenticated/')
+    axiosInstance.get('/users/isAuthenticated/')
         .then(() => {
             setIsAuthenticated(true);
             setLoading(false);
