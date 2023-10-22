@@ -3,12 +3,14 @@ from .models import Task
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 class TaskModelTestCase(TestCase):
 
   def setUp(self):
     self.task_title = "Test Task"
-    self.task = Task.objects.create(title=self.task_title)
+    self.user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
+    self.task = Task.objects.create(title=self.task_title, created_by=self.user)
 
   def test_task_creation(self):
     task = Task.objects.get(id=self.task.id)
@@ -18,6 +20,8 @@ class TaskViewTestCase(TestCase):
 
   def setUp(self):
     self.client = APIClient()
+    self.user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
+    self.client.force_authenticate(user=self.user)
     self.task_data = {'title': 'Test Task'}
     self.response = self.client.post(
         reverse('task-list'),
