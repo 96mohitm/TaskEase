@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { loginUser } from '../../api/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Auth';
 
 const Login: React.FC = () => {
@@ -61,6 +61,10 @@ const Login: React.FC = () => {
                     </button>
                 </div>
             </form>
+            <div className="mt-4 text-center">
+                <span className="text-gray-600">Don't have an account?</span>
+                <Link to="/register" className="ml-2 text-blue-500 hover:text-blue-600">Register here</Link>
+            </div>
         </div>
     );
 };

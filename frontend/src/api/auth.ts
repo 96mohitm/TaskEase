@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 import { AxiosError } from 'axios';
 
 export const registerUser = async (userData: { username: string; email: string; password: string }) => {
-    return axiosInstance.post('api/users/register/', userData);
+    return axiosInstance.post('users/register/', userData);
 };
 
 export const loginUser = async (credentials: { username: string; password: string }) => {
