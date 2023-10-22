@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { fetchUserProfile, logoutAPI } from '../api/auth';
 import { useAuth } from '../Auth';
 
+const DEFAULT_PROFILE_URL = './default_profile_pic.png';
+
 const NavBar: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const [avatarURL, setAvatarURL] = useState<string | null>(null);
+  const [avatarURL, setAvatarURL] = useState<string | null>(DEFAULT_PROFILE_URL);
 
   const handleLogout = async () => {
     try {
@@ -40,7 +42,10 @@ const NavBar: React.FC = () => {
         <Link to="/">TaskEase</Link>
       </div>
       <div className="flex items-center px-6">
-        {avatarURL && <img src={avatarURL} alt="User Avatar" className="w-8 h-8 rounded-full mr-4" />}
+        {isAuthenticated && avatarURL && <div className="w-8 h-8 rounded-full overflow-hidden mr-4">
+          <img src={avatarURL} alt="User Avatar" className="w-full h-full object-cover" />
+        </div>
+        }
         {isAuthenticated && <button onClick={handleLogout} className="mr-5">Log out</button>}
       </div>
     </nav>

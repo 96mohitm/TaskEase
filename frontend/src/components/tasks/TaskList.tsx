@@ -96,7 +96,7 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-4 sm:px-0">
       <div className="flex flex-wrap justify-between items-center space-x-4 p-2 bg-gray-100 rounded-md">
 
         {/* Search Bar */}
@@ -135,14 +135,18 @@ const TaskList: React.FC = () => {
         </button>
       </div>
 
-      {filteredTasks.map(task => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onDelete={handleDelete}
-          onUpdate={handleUpdate}
-        />
-      ))}
+      <div className="flex flex-wrap -mx-2">
+        {filteredTasks.map(task => (
+          <div className="w-full sm:w-1/2 lg:w-1/3 px-2 mb-4">
+            <TaskItem
+              key={task.id}
+              task={task}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
+            />
+          </div>
+        ))}
+      </div>
       <TaskModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

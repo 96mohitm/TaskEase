@@ -41,30 +41,30 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="bg-white p-4 shadow-md rounded-lg space-y-2">
+    <div className="bg-white p-4 shadow-md rounded-lg space-y-4 border border-gray-200">
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-bold">{task.title}</h3>
+        <h3 className="text-xl font-bold text-blue-800">{task.title}</h3>
         <div className="space-x-2">
-          <button className="text-blue-500 hover:text-blue-700" onClick={handleOpenModal}>
+          <button className="text-blue-500 focus:outline-none" onClick={handleOpenModal}>
             <FaEdit />
           </button>
-          <button className="text-red-500 hover:text-red-700" onClick={handleOpenDeleteConfirmModal}>
+          <button className="text-red-500 focus:outline-none" onClick={handleOpenDeleteConfirmModal}>
             <FaTrash />
           </button>
         </div>
       </div>
-      <p className="text-gray-600">{task.description}</p>
+      <p className="text-gray-700">{task.description}</p>
       <div className="flex justify-between items-center">
-        <span className="inline-flex items-center bg-blue-100 text-blue-800 py-1 px-2 rounded">
+        <span className="inline-flex items-center bg-blue-200 text-blue-900 py-1 px-2 rounded-full">
           {task.status}
         </span>
         {task.due_date && (
-          <div className="text-sm flex items-center text-gray-700">
+          <div className="text-sm flex items-center text-gray-800">
             <FaCalendar className="mr-1" /> Due on: {new Date(task.due_date).toLocaleDateString()}
           </div>
         )}
       </div>
-      <TaskModal 
+      <TaskModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onTaskCompleted={onUpdate}
