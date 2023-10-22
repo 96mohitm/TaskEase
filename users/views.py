@@ -52,3 +52,8 @@ def logout_view(request):
     response.delete_cookie('jwt')  # Assuming you named your JWT cookie 'jwt'
     response.data = {"message": "Successfully logged out."}
     return response
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def is_user_authenticated(self):
+  return Response(status=status.HTTP_200_OK)

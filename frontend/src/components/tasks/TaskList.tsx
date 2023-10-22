@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import TaskItem from './TaskItem';
 import TaskFilter from './TaskFilter';
 import { fetchTasks, deleteTask } from '../../api/tasks';
+import { useAuth } from '../../Auth';
+import { useNavigate } from 'react-router-dom';
 
 type Task = {
   id: number;
@@ -12,6 +14,19 @@ type Task = {
 
 const TaskList: React.FC = () => {
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // if already logged in then redirect to candidates page.
+    if (isAuthenticated) {
+      navigate('/');
+    } else {
+      console.log('isAuth: ', isAuthenticated);
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
 
   useEffect(() => {
     async function fetchData() {

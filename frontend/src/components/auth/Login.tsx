@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { loginUser } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Auth';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    
+    const { isAuthenticated } = useAuth();
+
+    useEffect(() => {
+      // if already logged in then redirect to candidates page.
+      if (isAuthenticated) {
+        navigate('/');
+      }
+    }, [isAuthenticated, navigate]);
+  
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {

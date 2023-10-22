@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { updateTask, deleteTask } from '../../api/tasks';
+import { updateTask } from '../../api/tasks';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 type TaskItemProps = {
   task: {
@@ -16,6 +17,20 @@ type TaskItemProps = {
 const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(task);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    handleCloseModal();
+    handleDelete();
+  };
 
   const handleDelete = async () => {
     try {
@@ -95,10 +110,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onUpdate }) => {
                 <button className="text-blue-500" onClick={() => setIsEditing(true)}>
                     <FaEdit />
                 </button>
-                <button className="text-red-500" onClick={handleDelete}>
+                <button className="text-red-500" onClick={handleOpenModal}>
                     <FaTrash />
                 </button>
             </div>
+            <DeleteConfirmationModal
+                isOpen={isModalOpen}
+                onCancel={handleCloseModal}
+                onConfirm={handleConfirmDelete}
+            />
+
         </div>
     );
 };

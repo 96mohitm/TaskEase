@@ -10,20 +10,23 @@ import TaskList from './components/tasks/TaskList';
 import NavBar from './components/NavBar';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import { AuthProvider } from "./Auth";
 
 function App() {
   return (
-    <Router>
-      <NavBar />
-      <div className="container mx-auto mt-10">
-        <Routes>
-          <Route path="/create" element={<TaskForm />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<TaskList />} />            
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <NavBar />
+        <div className="container mx-auto mt-10">
+          <Routes>
+            <Route path="/create" element={<TaskForm />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<TaskList />} />            
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
