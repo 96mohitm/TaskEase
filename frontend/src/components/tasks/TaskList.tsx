@@ -24,7 +24,6 @@ const TaskList: React.FC = () => {
     if (isAuthenticated) {
       navigate('/');
     } else {
-      console.log('isAuth: ', isAuthenticated);
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);

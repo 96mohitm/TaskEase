@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance';
+import { AxiosError } from 'axios';
 
 export const registerUser = async (userData: { username: string; email: string; password: string }) => {
     return axiosInstance.post('api/users/register/', userData);
@@ -13,6 +14,15 @@ export const loginUser = async (credentials: { username: string; password: strin
   return response;
 };
 
-export const logoutUser = () => {
-  document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-};
+export const logoutAPI = async () => {
+  try {
+    const response = await axiosInstance.post('/users/logout/');
+    return response.data;
+  } catch (error) {
+    if ((error as AxiosError).response) {
+      throw (error as AxiosError).response?.data;
+    } else {
+      throw new Error("Server error");
+    }
+  }
+}
