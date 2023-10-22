@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { logoutAPI } from '../api/auth';
+import { useAuth } from '../Auth';
 
 const NavBar: React.FC = () => {
-  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -22,8 +23,7 @@ const NavBar: React.FC = () => {
         <Link to="/">TaskEase</Link>
       </div>
       <div className="px-6">
-        <button onClick={handleLogout} className="mr-5">Log out</button>
-        {/* TODO: add login/register links here */}
+      {isAuthenticated && <button onClick={handleLogout} className="mr-5">Log out</button>}
       </div>
     </nav>
   );
