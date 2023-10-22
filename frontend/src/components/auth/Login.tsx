@@ -22,7 +22,7 @@ const Login: React.FC = () => {
             const response = await loginUser({ username, password });
             if (response.status === 200) {
                 // Login successful, save the JWT, and redirect to the home page.
-                navigate('/');
+                window.location.href = '/';
             }
         } catch (error) {
             console.error("Error during login:", error);

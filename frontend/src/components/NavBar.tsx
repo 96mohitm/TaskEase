@@ -10,7 +10,7 @@ const NavBar: React.FC = () => {
       await logoutAPI();
       console.log('logout success.!!');
       // Optionally display a message or notification to the user here
-      navigate('/login'); // Redirect to login page after logout
+      window.location.href = '/login';
     } catch (error) {
       console.error("Error during logout:", error);
     }
