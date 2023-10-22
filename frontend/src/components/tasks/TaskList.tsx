@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import debounce from "lodash.debounce";
 import TaskSort from './TaskSort';
+import { FaPlus, FaFilter, FaSortAmountDown } from 'react-icons/fa';
 
 type Task = {
   id: number;
@@ -96,9 +97,10 @@ const TaskList: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center space-x-4">
+      <div className="flex flex-wrap justify-between items-center space-x-4 p-2 bg-gray-100 rounded-md">
+
         {/* Search Bar */}
-        <div className="relative w-full max-w-xs">
+        <div className="relative w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-2 md:mb-0">
           <input
             className="block w-full border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             placeholder="Search tasks..."
@@ -112,16 +114,25 @@ const TaskList: React.FC = () => {
         </div>
 
         {/* Status Filter */}
-        <TaskFilter onFilterChange={handleFilterChange} />
+        <div className="flex items-center mb-2 md:mb-0 space-x-2">
+          <FaFilter className="text-blue-500" />
+          <TaskFilter onFilterChange={handleFilterChange} />
+        </div>
+
+        {/* Task Sort */}
+        <div className="flex items-center mb-2 md:mb-0 space-x-2">
+          <FaSortAmountDown className="text-blue-500" />
+          <TaskSort onSortChange={handleSortChange} />
+        </div>
 
         {/* Create Task Button */}
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          className="flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           onClick={() => setModalOpen(true)}
         >
-          Create Task
+          <FaPlus className="mr-2" />
+          Add new task
         </button>
-        <TaskSort onSortChange={handleSortChange} />
       </div>
 
       {filteredTasks.map(task => (

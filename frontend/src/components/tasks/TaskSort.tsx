@@ -1,18 +1,22 @@
+import { FaSort } from 'react-icons/fa';
+
 interface SortProps {
   onSortChange: (sortOption: string) => void;
 }
 
 const TaskSort: React.FC<SortProps> = ({ onSortChange }) => {
   return (
-      <div>
-          <select
-              onChange={(e) => onSortChange(e.target.value)}
-              className="border rounded-md text-black"
-          >
-              <option value="-created_at">Sort by Created At</option>
-              <option value="-updated_at">Sort by Updated At</option>
-          </select>
-      </div>
+    <div className="flex items-center bg-white border rounded-md">
+      <FaSort className="text-gray-700 px-2" />
+      <select
+          onChange={(e) => onSortChange(e.target.value)}
+          className="bg-transparent appearance-none outline-none py-1 pr-4"
+      >
+          <option value="" disabled selected>Sort</option>
+          <option value="-created_at">Created: Newest</option>
+          <option value="-updated_at">Updated: Newest</option>
+      </select>
+    </div>
   );
 };
 
