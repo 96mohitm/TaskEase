@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance';
 
-export const fetchTasks = async (query: string = '', status: string | null = null) => {
+export const fetchTasks = async (query: string = '', status: string | null = null, sortOption: string = '-created_at') => {
   let endpoint = 'tasks/';
   const params: any = {};
 
@@ -11,6 +11,8 @@ export const fetchTasks = async (query: string = '', status: string | null = nul
   if (status) {
     params.status = status;
   }
+
+  params.ordering = sortOption;
 
   try {
     const response = await axiosInstance.get(endpoint, { params });

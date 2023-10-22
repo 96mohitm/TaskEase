@@ -6,6 +6,7 @@ import { useAuth } from '../../Auth';
 import { useNavigate } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import debounce from "lodash.debounce";
+import TaskSort from './TaskSort';
 
 type Task = {
   id: number;
@@ -19,6 +20,7 @@ const TaskList: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [sortOption, setSortOption] = useState<string>('-created_at');
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -46,14 +48,14 @@ const TaskList: React.FC = () => {
 
   // Use an effect to fetch tasks whenever the debounced search query changes
   useEffect(() => {
-    fetchTasks(searchQuery, statusFilter)
+    fetchTasks(searchQuery, statusFilter, sortOption)
       .then(data => {
         setFilteredTasks(data);
       })
       .catch(error => {
         console.error("Error fetching tasks:", error);
       });
-  }, [searchQuery, statusFilter]);
+}, [searchQuery, statusFilter, sortOption]);
 
   // Debounced version of the fetch tasks function
   const debouncedFetchTasks = debounce((query: string) => {
@@ -86,7 +88,11 @@ const TaskList: React.FC = () => {
 
   const handleFilterChange = (status: string) => {
     setStatusFilter(status);
-};
+  };
+
+  const handleSortChange = (sortOption: string) => {
+    setSortOption(sortOption);
+  };
 
   return (
     <div className="space-y-4">
@@ -115,6 +121,7 @@ const TaskList: React.FC = () => {
         >
           Create Task
         </button>
+        <TaskSort onSortChange={handleSortChange} />
       </div>
 
       {filteredTasks.map(task => (

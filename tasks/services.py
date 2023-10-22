@@ -9,7 +9,7 @@ class TaskService:
     return Task.objects.filter(created_by=user)
 
   @staticmethod
-  def get_filtered_tasks(user, status=None, search_query=None):
+  def get_filtered_tasks(user, status=None, search_query=None, order_by=None):
     tasks = Task.objects.filter(created_by=user)
 
     if status:
@@ -17,6 +17,9 @@ class TaskService:
 
     if search_query:
       tasks = tasks.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
+
+    if order_by:
+      tasks = tasks.order_by(order_by)
 
     return tasks
 
