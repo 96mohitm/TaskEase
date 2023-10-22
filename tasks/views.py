@@ -12,7 +12,8 @@ class TaskListView(APIView):
 
     def get(self, request):
         status = request.GET.get("status", None)
-        tasks = TaskService.get_filtered_tasks(request.user, status)
+        search_query = request.GET.get("search", None)
+        tasks = TaskService.get_filtered_tasks(request.user, status, search_query)
 
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)

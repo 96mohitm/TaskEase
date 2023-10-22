@@ -1,5 +1,6 @@
 from .models import Task
 from .serializers import TaskSerializer
+from django.db.models import Q
 
 class TaskService:
 
@@ -8,11 +9,14 @@ class TaskService:
     return Task.objects.filter(created_by=user)
 
   @staticmethod
-  def get_filtered_tasks(user, status=None):
+  def get_filtered_tasks(user, status=None, search_query=None):
     tasks = Task.objects.filter(created_by=user)
 
     if status:
       tasks = tasks.filter(status=status)
+
+    if search_query:
+      tasks = tasks.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
 
     return tasks
 

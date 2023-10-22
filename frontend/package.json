@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.13",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.5.1",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
@@ -46,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:8000/"
+  "proxy": "http://127.0.0.1:8000/",
+  "devDependencies": {
+    "@types/lodash.debounce": "^4.0.8"
+  }
 }
