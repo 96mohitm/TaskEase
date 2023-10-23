@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Task
 from .serializers import TaskSerializer
 from .services import TaskService
 from .error_util import format_errors
