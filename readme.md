@@ -9,6 +9,7 @@
   - [Getting Started](#getting-started)
     - [Backend](#backend-1)
     - [Frontend](#frontend-1)
+    - [Running Unit tests:](#running-unit-tests)
   - [Assumptions:](#assumptions)
   - [API Endpoints](#api-endpoints)
   - [Database Design](#database-design)
@@ -60,6 +61,13 @@ Note: I am using `Python 3.11.4`
    ```
    npm start
    ```
+4. Application should be up at: http://localhost:3000/
+
+### Running Unit tests:
+Running Unit tests:
+```
+python manage.py test tasks
+```
 
 ## Assumptions:
 1. We will have user login/register
