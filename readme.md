@@ -31,21 +31,21 @@
 
 ### Backend 
 Note: I am using `Python 3.11.4`
-1. Navigate to the `backend` directory.
-2. Setup a virtual environment:
+
+1. Setup a virtual environment:
    ```
    python3 -m venv venv
    source venv/bin/activate
    ```
-3. Install the required packages:
+2. Install the required packages:
    ```
    pip install -r requirements.txt
    ```
-4. Run migrations:
+3. Run migrations:
    ```
    python manage.py migrate
    ```
-5. Start the server:
+4. Start the server:
    ```
    python manage.py runserver
    ```
