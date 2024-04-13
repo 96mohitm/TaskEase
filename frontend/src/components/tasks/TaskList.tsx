@@ -26,7 +26,7 @@ const TaskList: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if already logged in then redirect to candidates page.
+    // if already logged in then redirect to todo list page.
     if (isAuthenticated) {
       navigate('/');
     } else {

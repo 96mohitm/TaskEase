@@ -8,7 +8,7 @@ import {
 import TaskList from './components/tasks/TaskList';
 import NavBar from './components/NavBar';
 import Register from './components/auth/Register';
-import Login from './components/auth/Login';
+import Login from './components/googleAuth/Login';
 import { AuthProvider } from "./Auth";
 
 function App() {

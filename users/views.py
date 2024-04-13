@@ -6,12 +6,13 @@ from django.contrib.auth.models import User
 
 from taskease_api import settings
 from .models import UserProfile
-from .serializers import UserSerializer
+from .serializers import GoogleSocialAuthSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import GenericAPIView
 
 
 @csrf_exempt
@@ -52,13 +53,16 @@ def login(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_view(request):
-    response = Response()
-    response.delete_cookie('jwt')  # Assuming you named your JWT cookie 'jwt'
-    response.data = {"message": "Successfully logged out."}
-    return response
+    if request.method == 'POST':
+        try:
+            request.user.auth_token.delete()
+            response = Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+            response.delete_cookie('auth_token')
+            return response
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def is_user_authenticated(self):
   return Response(status=status.HTTP_200_OK)
 
@@ -77,3 +81,23 @@ def user_profile(request):
         "avatar": avatar_url
     }
     return Response(data)
+
+# Google Login
+@permission_classes((AllowAny, ))
+class GoogleSocialAuthView(GenericAPIView):
+    authentication_classes = []
+
+    serializer_class = GoogleSocialAuthSerializer
+
+    def post(self, request):
+        """
+        POST with "auth_token"
+        Send an idtoken as from google to get user information
+        """
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = ((serializer.validated_data)['auth_token'])
+        response = Response(data, status=status.HTTP_200_OK)
+        response.set_cookie('auth_token', data.get('tokens'), httponly=True, samesite='Lax', secure=True) # 'secure=True' ensures cookie is sent over HTTPS only
+        return response
+

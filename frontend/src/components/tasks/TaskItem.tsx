@@ -42,10 +42,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="bg-white p-4 shadow-md rounded-lg space-y-4 border border-gray-200">
-      <div className="flex justify-between items-center">
-        <h3 className="text-xl font-bold text-blue-800">{task.title}</h3>
-        <div className="space-x-2">
+<div className="group bg-white p-4 shadow-md rounded-lg space-y-4 border border-gray-200 hover:bg-sky-700 transition duration-1000 ease-in-out">
+  <div className="flex justify-between items-center">
+    <h3 className="text-xl font-bold text-blue-800 group-hover:text-2xl transition duration-1000 ease-in-out">{task.title}</h3>
+    <div className="space-x-2">
           <button className="text-blue-500 focus:outline-none" onClick={handleOpenModal}>
             <FaEdit />
           </button>

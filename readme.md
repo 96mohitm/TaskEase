@@ -54,6 +54,9 @@ Note: I am using `Python 3.11.4`
 ### Frontend
 
 1. Navigate to the `frontend` directory.
+   ```
+   cd frontend
+   ```
 2. Install the required packages:
    ```
    npm install

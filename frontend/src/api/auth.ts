@@ -30,6 +30,9 @@ export const loginUser = async (credentials: { username: string; password: strin
   if (response.status === 200) {
       // Set the JWT in the cookies
       document.cookie = `jwt=${response.data.jwt}; path=/; HttpOnly`;
+      window.location.href = '/';
+  } else {
+    console.error('Error while ')
   }
   return response;
 };

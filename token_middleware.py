@@ -6,8 +6,8 @@ class TokenAuthMiddleware:
     self.get_response = get_response
 
   def __call__(self, request):
-    token = request.COOKIES.get('jwt')
+    token = request.COOKIES.get('auth_token')
     if token:
-      request.META['HTTP_AUTHORIZATION'] = f"Bearer {token}"
+      request.META['HTTP_AUTHORIZATION'] = f"Token {token}"
     response = self.get_response(request)
     return response

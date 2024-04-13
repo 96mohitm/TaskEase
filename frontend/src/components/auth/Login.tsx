@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     const { isAuthenticated } = useAuth();
 
     useEffect(() => {
-      // if already logged in then redirect to candidates page.
+      // if already logged in then redirect to todo list.
       if (isAuthenticated) {
         navigate('/');
       }
@@ -18,15 +18,7 @@ const Login: React.FC = () => {
   
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            const response = await loginUser({ username, password });
-            if (response.status === 200) {
-                // Login successful, save the JWT, and redirect to the home page.
-                window.location.href = '/';
-            }
-        } catch (error) {
-            console.error("Error during login:", error);
-        }
+        await loginUser({username, password});
     };
 
     return (
